@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>出席状況</title>
+<style>
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f2f2f7;
+}
+header {
+  background: #ffffff;
+  padding: 16px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+}
+.container {
+  padding: 16px;
+}
+.card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+.name {
+  font-size: 18px;
+  font-weight: bold;
+}
+.status {
+  margin-top: 4px;
+}
+.present {
+  color: #34c759;
+}
+.absent {
+  color: #ff3b30;
+}
+.time {
+  font-size: 14px;
+  color: #666;
+}
+</style>
+</head>
+<body>
+
+<header>出席状況</header>
+
+<div class="container" id="list"></div>
+
+<script>
+const members = ["山田 太郎", "佐藤 花子", "鈴木 一郎"];
+const data = JSON.parse(localStorage.getItem("attendance")) || {};
+const list = document.getElementById("list");
+
+members.forEach(name => {
+  const card = document.createElement("div");
+  card.className = "card";
+
+  if (data[name]) {
+    card.innerHTML = `
+      <div class="name">${name}</div>
+      <div class="status present">出席</div>
+      <div class="time">${data[name].time}</div>
+    `;
+  } else {
+    card.innerHTML = `
+      <div class="name">${name}</div>
+      <div class="status absent">不在</div>
+    `;
+  }
+
+  list.appendChild(card);
+});
+</script>
+
+</body>
+</html>
