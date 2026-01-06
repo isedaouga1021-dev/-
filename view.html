@@ -13,6 +13,7 @@ body {
   display: none;
 }
 
+/* ヘッダー */
 header {
   background: #ffffff;
   padding: 16px;
@@ -26,9 +27,10 @@ header {
   padding: 16px;
 }
 
+/* カード */
 .card {
   background: #ffffff;
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 14px;
   margin-bottom: 12px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.08);
@@ -41,61 +43,22 @@ header {
 
 .present {
   color: #34c759;
+  margin-top: 4px;
 }
 
 .absent {
   color: #ff3b30;
+  margin-top: 4px;
 }
 
 .time {
   font-size: 14px;
   color: #666;
-}
-</style>
-</head>
-
-<body>
-
-<header>出席状況</header>
-
-<div class="container" id="list"></div>
-
-<script>
-const PASSWORD = "kogyo2544";
-
-// パスワード確認
-const input = prompt("パスワードを入力してください");
-if (input === PASSWORD) {
-  document.body.style.display = "block";
-} else {
-  alert("パスワードが違います");
-  location.href = "about:blank";
+  margin-top: 2px;
 }
 
-const members = ["山田 太郎", "佐藤 花子", "鈴木 一郎"];
-const data = JSON.parse(localStorage.getItem("attendance")) || {};
-const list = document.getElementById("list");
-
-members.forEach(name => {
-  const card = document.createElement("div");
-  card.className = "card";
-
-  if (data[name]) {
-    card.innerHTML = `
-      <div class="name">${name}</div>
-      <div class="present">出席</div>
-      <div class="time">${data[name].time}</div>
-    `;
-  } else {
-    card.innerHTML = `
-      <div class="name">${name}</div>
-      <div class="absent">不在</div>
-    `;
-  }
-
-  list.appendChild(card);
-});
-</script>
-
-</body>
-</html>
+/* 削除ボタン */
+.delete-btn {
+  margin-top: 10px;
+  padding: 8px 12px;
+  font-si
