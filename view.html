@@ -10,9 +10,9 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   background: #f2f2f7;
+  display: none;
 }
 
-/* ヘッダー */
 header {
   background: #ffffff;
   padding: 16px;
@@ -22,31 +22,10 @@ header {
   box-shadow: 0 1px 5px rgba(0,0,0,0.1);
 }
 
-/* 全体 */
 .container {
   padding: 16px;
 }
 
-/* 戻るボタン */
-.back-button {
-  width: 100%;
-  padding: 14px;
-  font-size: 17px;
-  border: none;
-  border-radius: 14px;
-  background: #8e8e93;
-  color: white;
-  font-weight: bold;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  cursor: pointer;
-  margin-bottom: 20px;
-}
-
-.back-button:active {
-  background: #6c6c70;
-}
-
-/* カード */
 .card {
   background: #ffffff;
   border-radius: 14px;
@@ -62,12 +41,10 @@ header {
 
 .present {
   color: #34c759;
-  margin-top: 4px;
 }
 
 .absent {
   color: #ff3b30;
-  margin-top: 4px;
 }
 
 .time {
@@ -81,17 +58,20 @@ header {
 
 <header>出席状況</header>
 
-<div class="container">
-
-  <button class="back-button" onclick="location.href='register.html'">
-    出席登録に戻る
-  </button>
-
-  <div id="list"></div>
-
-</div>
+<div class="container" id="list"></div>
 
 <script>
+const PASSWORD = "kogyo2544";
+
+// パスワード確認
+const input = prompt("パスワードを入力してください");
+if (input === PASSWORD) {
+  document.body.style.display = "block";
+} else {
+  alert("パスワードが違います");
+  location.href = "about:blank";
+}
+
 const members = ["山田 太郎", "佐藤 花子", "鈴木 一郎"];
 const data = JSON.parse(localStorage.getItem("attendance")) || {};
 const list = document.getElementById("list");
