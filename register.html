@@ -10,6 +10,7 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   background: #f2f2f7;
+  display: none; /* パスワード通過後に表示 */
 }
 
 /* ヘッダー */
@@ -22,43 +23,35 @@ header {
   box-shadow: 0 1px 5px rgba(0,0,0,0.1);
 }
 
-/* 全体 */
 .container {
   padding: 16px;
 }
 
-/* view.htmlへ移動 */
-.view-button {
-  width: 100%;
-  padding: 14px;
-  font-size: 17px;
-  border: none;
-  border-radius: 14px;
-  background: #007aff;
-  color: white;
-  font-weight: bold;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  cursor: pointer;
-  margin-bottom: 20px;
-}
-
-.view-button:active {
-  background: #005ecb;
-}
-
-/* 部員 */
+/* 通常（未出席） */
 .member {
   background: #ffffff;
-  border-radius: 14px;
-  padding: 16px;
-  margin-bottom: 12px;
-  font-size: 18px;
+  border-radius: 18px;
+  padding: 26px;
+  margin-bottom: 16px;
+  font-size: 22px;
+  font-weight: 600;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
   cursor: pointer;
+  user-select: none;
 }
 
-.member:active {
+/* 出席済み */
+.member.attended {
+  background: #d1f5d3;
+  color: #1c7c33;
+  box-shadow: none;
+  cursor: default;
+}
+
+/* 押下時 */
+.member:active:not(.attended) {
+  transform: scale(0.97);
   background: #e5e5ea;
 }
 </style>
@@ -69,29 +62,67 @@ header {
 <header>出席登録</header>
 
 <div class="container">
-
-  <button class="view-button" onclick="location.href='view.html'">
-    出席状況を確認
-  </button>
-
-  <div class="member" onclick="attend('山田 太郎')">山田 太郎</div>
-  <div class="member" onclick="attend('佐藤 花子')">佐藤 花子</div>
-  <div class="member" onclick="attend('鈴木 一郎')">鈴木 一郎</div>
-
+  <div class="member" data-name="山田 太郎">山田 太郎</div>
+  <div class="member" data-name="佐藤 花子">佐藤 花子</div>
+  <div class="member" data-name="鈴木 一郎">鈴木 一郎</div>
 </div>
 
 <script>
-function attend(name) {
-  const data = JSON.parse(localStorage.getItem("attendance")) || {};
-
-  data[name] = {
-    status: "出席",
-    time: new Date().toLocaleString()
-  };
-
-  localStorage.setItem("attendance", JSON.stringify(data));
-  alert(name + " を出席にしました");
+/* ===== パスワード ===== */
+const PASSWORD = "kogyo2544";
+const input = prompt("パスワードを入力してください");
+if (input === PASSWORD) {
+  document.body.style.display = "block";
+} else {
+  alert("パスワードが違います");
+  location.href = "about:blank";
 }
+
+/* ===== 出席処理 ===== */
+const members = document.querySelectorAll(".member");
+let lock = false; // 二重タップ防止用
+
+// 既に出席している人は色を変える
+const saved = JSON.parse(localStorage.getItem("attendance")) || {};
+members.forEach(el => {
+  const name = el.dataset.name;
+  if (saved[name]) {
+    el.classList.add("attended");
+    el.textContent = name + "（出席済）";
+  }
+});
+
+// クリック処理
+members.forEach(el => {
+  el.addEventListener("click", () => {
+    if (lock) return;                 // 二重タップ防止
+    if (el.classList.contains("attended")) return;
+
+    const name = el.dataset.name;
+
+    // 確認ダイアログ
+    const ok = confirm(name + " さんで出席しますか？");
+    if (!ok) return;
+
+    lock = true;
+
+    const data = JSON.parse(localStorage.getItem("attendance")) || {};
+    data[name] = {
+      status: "出席",
+      time: new Date().toLocaleString()
+    };
+    localStorage.setItem("attendance", JSON.stringify(data));
+
+    // 見た目変更
+    el.classList.add("attended");
+    el.textContent = name + "（出席済）";
+
+    // 少し待ってからロック解除（誤爆防止）
+    setTimeout(() => {
+      lock = false;
+    }, 800);
+  });
+});
 </script>
 
 </body>
