@@ -4,12 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>出席登録</title>
+
 <style>
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   background: #f2f2f7;
 }
+
+/* ヘッダー */
 header {
   background: #ffffff;
   padding: 16px;
@@ -18,9 +21,32 @@ header {
   text-align: center;
   box-shadow: 0 1px 5px rgba(0,0,0,0.1);
 }
+
+/* 全体 */
 .container {
   padding: 16px;
 }
+
+/* view.htmlへ移動するボタン */
+.view-button {
+  width: 100%;
+  padding: 14px;
+  font-size: 17px;
+  border: none;
+  border-radius: 14px;
+  background: #007aff;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.view-button:active {
+  background: #005ecb;
+}
+
+/* 部員ボタン */
 .member {
   background: #ffffff;
   border-radius: 14px;
@@ -31,28 +57,40 @@ header {
   box-shadow: 0 4px 10px rgba(0,0,0,0.08);
   cursor: pointer;
 }
+
 .member:active {
   background: #e5e5ea;
 }
 </style>
 </head>
+
 <body>
 
 <header>出席登録</header>
 
 <div class="container">
+
+  <!-- 出席状況表示ページへ -->
+  <button class="view-button" onclick="location.href='view.html'">
+    出席状況を確認
+  </button>
+
+  <!-- 部員一覧 -->
   <div class="member" onclick="attend('山田 太郎')">山田 太郎</div>
   <div class="member" onclick="attend('佐藤 花子')">佐藤 花子</div>
   <div class="member" onclick="attend('鈴木 一郎')">鈴木 一郎</div>
+
 </div>
 
 <script>
 function attend(name) {
   const data = JSON.parse(localStorage.getItem("attendance")) || {};
+
   data[name] = {
     status: "出席",
     time: new Date().toLocaleString()
   };
+
   localStorage.setItem("attendance", JSON.stringify(data));
   alert(name + " を出席にしました");
 }
