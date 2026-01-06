@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>出席登録</title>
+<style>
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f2f2f7;
+}
+header {
+  background: #ffffff;
+  padding: 16px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+}
+.container {
+  padding: 16px;
+}
+.member {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+  font-size: 18px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  cursor: pointer;
+}
+.member:active {
+  background: #e5e5ea;
+}
+</style>
+</head>
+<body>
+
+<header>出席登録</header>
+
+<div class="container">
+  <div class="member" onclick="attend('山田 太郎')">山田 太郎</div>
+  <div class="member" onclick="attend('佐藤 花子')">佐藤 花子</div>
+  <div class="member" onclick="attend('鈴木 一郎')">鈴木 一郎</div>
+</div>
+
+<script>
+function attend(name) {
+  const data = JSON.parse(localStorage.getItem("attendance")) || {};
+  data[name] = {
+    status: "出席",
+    time: new Date().toLocaleString()
+  };
+  localStorage.setItem("attendance", JSON.stringify(data));
+  alert(name + " を出席にしました");
+}
+</script>
+
+</body>
+</html>
